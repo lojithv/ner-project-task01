@@ -22,7 +22,9 @@ text = "Una mujer de 27 años sin antecedentes, residente del hospital, " \
 
 doc = nlp(text)
 for ent in doc.ents:
-    print(ent.text, ent.label_)
+  print('')
+  # print(ent.text, ent.label_)
+    
 
 
 ################### Train Spacy NER.###########
@@ -63,18 +65,24 @@ def train_spacy():
       losses = {}
       # batch up the examples using spaCy's minibatch
       batches = minibatch(TRAIN_DATA, size=compounding(4.0, 32.0, 1.001))
+
+      # optimizer = nlp.initialize()
+
       for batch in batches:
           texts, annotations = zip(*batch)
+          doc = nlp.make_doc(texts)
+          example = tuple.from_dict(doc, annotations)
           nlp.update(
-                      [texts],  # batch of texts
-                      [annotations],  # batch of annotations
+                      [example],  # batch of texts
+                      # [annotations],  # batch of annotations
                       drop=0.5,  # dropout - make it harder to memorise data
                       losses=losses,
+                      # sgd=optimizer
                   )
           print("Losses", losses)
 
 
-
+train_spacy()
 
 
 # output doc
