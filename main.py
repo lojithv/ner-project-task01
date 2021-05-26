@@ -4,7 +4,7 @@ import random
 from spacy.util import minibatch, compounding
 from pathlib import Path
 
-nlp = spacy.load('es_core_news_md')
+nlp = spacy.load('es_core_news_sm')
 
 # Getting the pipeline component
 ner = nlp.get_pipe("ner")
@@ -70,7 +70,7 @@ def train_spacy():
 
       for batch in batches:
           texts, annotations = zip(*batch)
-          doc = nlp.make_doc(texts)
+          doc = nlp.make_doc(str(texts))
           example = tuple.from_dict(doc, annotations)
           nlp.update(
                       [example],  # batch of texts
